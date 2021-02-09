@@ -1,4 +1,4 @@
-package com.javacodegeeks.patterns.strategypattern;
+package StrategyDesignPatternProject;
 
 public class TestStrategyPattern {
 
