@@ -1,13 +1,13 @@
 # This workflow will build a Java project with Gradle
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
 
-name: Java CI with Gradle
+name: Build, generate javadoc and run test
 
 on:
   push:
-    branches: [ Desarrollo ]
+    branches: [ Pruebas ]
   pull_request:
-    branches: [ Desarrollo ]
+    branches: [ Pruebas ]
   schedule:
     - cron: '0 0 * * 0'
 
