@@ -9,6 +9,8 @@
 plugins {
     // Apply the java-library plugin to add support for Java Library
     id 'java-library'
+    //para poder publicar paquetes en github
+    id 'maven-publish'
 }
 
 repositories {
@@ -23,7 +25,55 @@ dependencies {
 
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
     implementation 'com.google.guava:guava:28.2-jre'
+   
+    // Use JUnit5 test framework
+    
+    // Use JUnit Jupiter API for testing.
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
 
-    // Use JUnit test framework
-    testImplementation 'junit:junit:4.12'
+    // Use JUnit Jupiter Engine for testing.
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+	  //Añado para usar mockito
+    testCompile "org.mockito:mockito-core:2.+" 
+    testCompile "org.mockito:mockito-junit-jupiter:2.+"
 }
+
+  //según https://github.com/junit-team/junit5-samples/blob/main/junit5-jupiter-starter-gradle/build.gradle
+  //para usar la nueva plataforma de pruebas unitarias de java (jupiter)
+
+test {
+    description = "Ejecuta los tests"
+	useJUnitPlatform()
+	testLogging {
+		events "passed", "skipped", "failed"
+	}
+}
+//Para publicar paquetes en github
+//group = 'shopmanager'
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/danneaije/strategydesignpatternproject")
+            credentials {
+            //las propiedades gpr.user y gpr.key están configuradas en gradle.properties en el raiz del proyecto, y se añade a .gitignore para que no se suban
+                username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_USERNAME")
+                password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
+                }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+         //Del tutorial https://docs.gradle.org/current/userguide/publishing_maven.html#publishing_maven
+        
+            groupId = 'MIT.FS'
+            artifactId = 'strategydesignpatternproject'
+            version = '0.0'
+
+            from components.java
+        }
+       
+    }
+}
+
+
